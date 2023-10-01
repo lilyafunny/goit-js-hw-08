@@ -1,7 +1,8 @@
 import throttle from 'lodash.throttle';
 const LS_KAY = 'feedback-form-state';
 
-const formData = {};
+let formData = JSON.parse(localStorage.getItem(LS_KAY)) || {};
+
 const refs = {
   form: document.querySelector('form'),
   textarea: document.querySelector('textarea'),
@@ -23,7 +24,7 @@ function onFormSubmit(evt) {
   if (refs.form.value === '' || refs.textarea.value === '') {
     return alert(`Please fill all fields!`);
   }
-
+  console.log(formData);
   evt.currentTarget.reset();
   localStorage.removeItem(LS_KAY);
 }
@@ -34,8 +35,9 @@ function onTextareaInput(evt) {
 }
 
 function message() {
-  const saveMessage = localStorage.getItem(LS_KAY);
-  if (saveMessage) {
-    refs.textarea.value = saveMessage;
+  if (formData) {
+    let { email, message } = refs.form.elements;
+    email.value = formData.email || '';
+    message.value = formData.message || '';
   }
 }
