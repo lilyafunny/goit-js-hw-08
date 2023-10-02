@@ -11,27 +11,22 @@ const refs = {
 message();
 
 refs.form.addEventListener('submit', onFormSubmit);
-refs.textarea.addEventListener('input', throttle(onTextareaInput, 500));
+refs.form.addEventListener('input', throttle(onFormInput, 500));
 
-refs.form.addEventListener('input', e => {
+function onFormInput(e) {
   formData[e.target.name] = e.target.value;
   localStorage.setItem(LS_KAY, JSON.stringify(formData));
-});
+}
 
 function onFormSubmit(evt) {
   evt.preventDefault();
-
-  if (refs.form.value === '' || refs.textarea.value === '') {
+  let { email } = refs.form.elements;
+  if (email.value === '' || refs.textarea.value === '') {
     return alert(`Please fill all fields!`);
   }
   console.log(formData);
   evt.currentTarget.reset();
   localStorage.removeItem(LS_KAY);
-}
-
-function onTextareaInput(evt) {
-  const value = evt.target.value;
-  localStorage.setItem(LS_KAY, value);
 }
 
 function message() {
